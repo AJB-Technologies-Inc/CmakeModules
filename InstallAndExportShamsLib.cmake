@@ -26,9 +26,15 @@ function(install_and_export_shams_lib TARGET_NAME PUBLIC_HEADERS_DIR VERSION)
 
     include(CMakePackageConfigHelpers)
     configure_package_config_file(
-        "${CMAKE_CURRENT_LIST_DIR}/Config.cmake.in"
+        "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/Config.cmake.in"
         "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}Config.cmake"
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${TARGET_NAME}
+    )
+
+    set_property(TARGET ${TARGET_NAME} PROPERTY VERSION ${version})
+    set_property(TARGET ${TARGET_NAME} PROPERTY INTERFACE_${TARGET_NAME}_MAJOR_VERSION 3)
+    set_property(TARGET ${TARGET_NAME} APPEND PROPERTY
+        COMPATIBLE_INTERFACE_STRING ${TARGET_NAME}_MAJOR_VERSION
     )
 
     write_basic_package_version_file(
